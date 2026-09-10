@@ -1,901 +1,564 @@
-/* ==========================================
-   GENERAL
-========================================== */
+function calculate() {
 
-* {
-    box-sizing: border-box;
-}
+    const result = document.getElementById("result");
 
-body {
-    margin: 0;
-    min-height: 100vh;
+    const matrixIds = [
+        "a11", "a12", "a13", "b1",
+        "a21", "a22", "a23", "b2",
+        "a31", "a32", "a33", "b3"
+    ];
 
-    font-family: Arial, sans-serif;
+    // Remove previous error highlights
+    matrixIds.forEach(id => {
+        document.getElementById(id).classList.remove("input-error");
+    });
 
-    background:
-        radial-gradient(
-            circle at top,
-            #21134a 0%,
-            #0b0920 45%,
-            #050510 100%
+    document.getElementById("tolerance").classList.remove("input-error");
+    document.getElementById("maxIterations").classList.remove("input-error");
+
+    // Check empty fields
+    let emptyFields = [];
+
+    matrixIds.forEach(id => {
+        const input = document.getElementById(id);
+
+        if (input.value.trim() === "") {
+            emptyFields.push(id);
+            input.classList.add("input-error");
+        }
+    });
+
+    if (emptyFields.length > 0) {
+
+        result.innerHTML = `
+            <div class="status-card error-card">
+                <h2>⚠ Input Required</h2>
+                <p>Please fill in all coefficient and constant values.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    // Get matrix values
+    const a11 = Number(document.getElementById("a11").value);
+    const a12 = Number(document.getElementById("a12").value);
+    const a13 = Number(document.getElementById("a13").value);
+    const b1 = Number(document.getElementById("b1").value);
+
+    const a21 = Number(document.getElementById("a21").value);
+    const a22 = Number(document.getElementById("a22").value);
+    const a23 = Number(document.getElementById("a23").value);
+    const b2 = Number(document.getElementById("b2").value);
+
+    const a31 = Number(document.getElementById("a31").value);
+    const a32 = Number(document.getElementById("a32").value);
+    const a33 = Number(document.getElementById("a33").value);
+    const b3 = Number(document.getElementById("b3").value);
+
+    const values = [
+        a11, a12, a13, b1,
+        a21, a22, a23, b2,
+        a31, a32, a33, b3
+    ];
+
+    // Check valid numbers
+    if (values.some(value => !Number.isFinite(value))) {
+
+        result.innerHTML = `
+            <div class="status-card error-card">
+                <h2>⚠ Invalid Input</h2>
+                <p>Please enter valid numerical values only.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    // Check diagonal elements
+    const diagonalIds = [
+        "a11",
+        "a22",
+        "a33"
+    ];
+
+    const diagonalValues = [
+        a11,
+        a22,
+        a33
+    ];
+
+    let zeroDiagonal = false;
+
+    for (let i = 0; i < diagonalValues.length; i++) {
+
+        if (diagonalValues[i] === 0) {
+
+            document
+                .getElementById(diagonalIds[i])
+                .classList.add("input-error");
+
+            zeroDiagonal = true;
+        }
+    }
+
+    if (zeroDiagonal) {
+
+        result.innerHTML = `
+            <div class="status-card error-card">
+                <h2>✕ Invalid Matrix</h2>
+
+                <p>
+                    The diagonal coefficients
+                    <strong>a₁₁, a₂₂, a₃₃</strong>
+                    cannot be zero for the Gauss-Seidel method.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    // Initial values
+    let x1 = Number(document.getElementById("x1").value);
+    let x2 = Number(document.getElementById("x2").value);
+    let x3 = Number(document.getElementById("x3").value);
+
+    if (
+        !Number.isFinite(x1) ||
+        !Number.isFinite(x2) ||
+        !Number.isFinite(x3)
+    ) {
+
+        result.innerHTML = `
+            <div class="status-card error-card">
+                <h2>⚠ Invalid Initial Values</h2>
+
+                <p>
+                    Please enter valid numbers for
+                    x₁, x₂ and x₃.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    // Settings
+    const toleranceInput =
+        document.getElementById("tolerance");
+
+    const maxIterationsInput =
+        document.getElementById("maxIterations");
+
+    const tolerance =
+        Number(toleranceInput.value);
+
+    const maxIterations =
+        Number(maxIterationsInput.value);
+
+    // Validate tolerance
+    if (
+        !Number.isFinite(tolerance) ||
+        tolerance <= 0
+    ) {
+
+        toleranceInput.classList.add("input-error");
+
+        result.innerHTML = `
+            <div class="status-card error-card">
+                <h2>✕ Invalid Tolerance</h2>
+
+                <p>
+                    Tolerance must be greater than zero.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    // Validate max iterations
+    if (
+        !Number.isInteger(maxIterations) ||
+        maxIterations < 1 ||
+        maxIterations > 10000
+    ) {
+
+        maxIterationsInput.classList.add("input-error");
+
+        result.innerHTML = `
+            <div class="status-card error-card">
+                <h2>✕ Invalid Iteration Limit</h2>
+
+                <p>
+                    Maximum iterations must be an integer
+                    between <strong>1</strong> and
+                    <strong>10,000</strong>.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    // =========================
+    // DIAGONAL DOMINANCE CHECK
+    // =========================
+
+    const row1Dominant =
+        Math.abs(a11) >
+        Math.abs(a12) + Math.abs(a13);
+
+    const row2Dominant =
+        Math.abs(a22) >
+        Math.abs(a21) + Math.abs(a23);
+
+    const row3Dominant =
+        Math.abs(a33) >
+        Math.abs(a31) + Math.abs(a32);
+
+    const diagonallyDominant =
+        row1Dominant &&
+        row2Dominant &&
+        row3Dominant;
+
+    let systemCheck = "";
+
+    if (diagonallyDominant) {
+
+        systemCheck = `
+            <div class="status-card success-card">
+
+                <h2>✓ System Check</h2>
+
+                <p>✓ All input values are valid</p>
+
+                <p>✓ No zero diagonal coefficients</p>
+
+                <p>✓ Matrix is diagonally dominant</p>
+
+                <div class="status-good">
+                    ● Good conditions for convergence
+                </div>
+
+            </div>
+        `;
+
+    } else {
+
+        systemCheck = `
+            <div class="status-card warning-card">
+
+                <h2>⚠ System Check</h2>
+
+                <p>✓ All input values are valid</p>
+
+                <p>✓ No zero diagonal coefficients</p>
+
+                <p>
+                    ⚠ Matrix is not strictly
+                    diagonally dominant
+                </p>
+
+                <div class="status-warning">
+                    ● Convergence is not guaranteed
+                </div>
+
+            </div>
+        `;
+    }
+
+    let output = systemCheck;
+
+    let iterationRows = "";
+
+    let converged = false;
+
+    let convergenceIteration = 0;
+
+    // =========================
+    // GAUSS-SEIDEL ITERATIONS
+    // =========================
+
+    for (
+        let i = 1;
+        i <= maxIterations;
+        i++
+    ) {
+
+        const oldX1 = x1;
+        const oldX2 = x2;
+        const oldX3 = x3;
+
+        // Calculate x1
+        x1 =
+            (
+                b1 -
+                a12 * x2 -
+                a13 * x3
+            ) / a11;
+
+        // Calculate x2 using newest x1
+        x2 =
+            (
+                b2 -
+                a21 * x1 -
+                a23 * x3
+            ) / a22;
+
+        // Calculate x3 using newest x1 and x2
+        x3 =
+            (
+                b3 -
+                a31 * x1 -
+                a32 * x2
+            ) / a33;
+
+        // Check for invalid results
+        if (
+            !Number.isFinite(x1) ||
+            !Number.isFinite(x2) ||
+            !Number.isFinite(x3)
+        ) {
+
+            output += `
+                <div class="status-card error-card">
+
+                    <h2>✕ Calculation Failed</h2>
+
+                    <p>
+                        The iteration produced an invalid
+                        numerical result.
+                        This system may not converge using
+                        Gauss-Seidel.
+                    </p>
+
+                </div>
+            `;
+
+            result.innerHTML = output;
+
+            return;
+        }
+
+        // Calculate error
+        const error = Math.max(
+            Math.abs(x1 - oldX1),
+            Math.abs(x2 - oldX2),
+            Math.abs(x3 - oldX3)
         );
 
-    color: #ffffff;
-}
+        // Add iteration row
+        iterationRows += `
+            <tr>
+                <td>${i}</td>
+                <td>${x1.toFixed(6)}</td>
+                <td>${x2.toFixed(6)}</td>
+                <td>${x3.toFixed(6)}</td>
+                <td>${error.toFixed(6)}</td>
+            </tr>
+        `;
 
+        // Check convergence
+        if (error < tolerance) {
 
-/* ==========================================
-   MAIN CONTAINER
-========================================== */
+            converged = true;
 
-.container {
-    width: min(900px, 92%);
+            convergenceIteration = i;
 
-    margin: 40px auto;
-
-    padding: 35px;
-
-    background: rgba(15, 12, 35, 0.88);
-
-    border: 1px solid rgba(150, 120, 255, 0.25);
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(100, 60, 255, 0.08);
-
-    backdrop-filter: blur(10px);
-}
-
-
-/* ==========================================
-   TOP BAR
-========================================== */
-
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-}
-
-
-/* ==========================================
-   TITLE
-========================================== */
-
-h1 {
-    margin-top: 0;
-    margin-bottom: 8px;
-
-    font-size: 32px;
-
-    /* OLD GRADIENT TITLE */
-    background:
-        linear-gradient(
-            90deg,
-            #a78bfa,
-            #6366f1,
-            #38bdf8
-        );
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    background-clip: text;
-
-    font-weight: 800;
-}
-
-h2 {
-    margin-top: 32px;
-    margin-bottom: 15px;
-
-    font-size: 20px;
-}
-
-h3 {
-    margin-bottom: 8px;
-}
-
-p {
-    color: #bdb8d6;
-
-    line-height: 1.6;
-}
-
-
-/* ==========================================
-   INFO BUTTON
-========================================== */
-
-.info-button {
-    width: auto;
-    min-width: 85px;
-
-    padding: 10px 16px;
-
-    background:
-        rgba(120, 80, 255, 0.12);
-
-    border:
-        1px solid rgba(150, 120, 255, 0.35);
-
-    border-radius: 10px;
-
-    color: #ffffff;
-
-    font-size: 14px;
-
-    cursor: pointer;
-
-    transition: 0.25s ease;
-}
-
-.info-button:hover {
-    background:
-        rgba(120, 80, 255, 0.25);
-
-    border-color:
-        rgba(170, 140, 255, 0.7);
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 5px 20px rgba(100, 70, 255, 0.2);
-}
-
-.info-button:active {
-    transform: translateY(0);
-}
-
-
-/* ==========================================
-   INFO PANEL
-========================================== */
-
-.info-panel {
-    display: none;
-
-    margin-top: 18px;
-
-    padding: 20px;
-
-    background:
-        rgba(25, 20, 50, 0.8);
-
-    border:
-        1px solid rgba(140, 110, 255, 0.35);
-
-    border-radius: 14px;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.25);
-}
-
-.info-panel.show {
-    display: block;
-
-    animation:
-        infoDrop 0.25s ease;
-}
-
-@keyframes infoDrop {
-
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
+            break;
+        }
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    // =========================
+    // ITERATION DROPDOWN
+    // =========================
+
+    output += `
+        <div class="iterations-section">
+
+            <button
+                class="iterations-toggle"
+                onclick="toggleIterations()"
+            >
+
+                <span id="iterationsArrow">
+                    ▶
+                </span>
+
+                <span>
+                    View Iterations
+                    (${converged
+                        ? convergenceIteration
+                        : maxIterations}
+                    iterations)
+                </span>
+
+            </button>
+
+            <div
+                id="iterationsPanel"
+                class="iterations-panel"
+            >
+
+                <table>
+
+                    <tr>
+                        <th>Iteration</th>
+                        <th>x₁</th>
+                        <th>x₂</th>
+                        <th>x₃</th>
+                        <th>Error</th>
+                    </tr>
+
+                    ${iterationRows}
+
+                </table>
+
+            </div>
+
+        </div>
+    `;
+
+    // =========================
+    // FINAL RESULT
+    // =========================
+
+    if (converged) {
+
+        output += `
+            <div class="solution-card">
+
+                <div class="solution-header">
+
+                    <span class="solution-icon">
+                        ✓
+                    </span>
+
+                    <div>
+
+                        <div class="solution-title">
+                            Converged
+                        </div>
+
+                        <div class="solution-subtitle">
+
+                            Solution found in
+                            ${convergenceIteration}
+                            iterations
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="solution-values">
+
+                    <div>
+
+                        <span>x₁</span>
+
+                        <strong>
+                            ${x1.toFixed(6)}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>x₂</span>
+
+                        <strong>
+                            ${x2.toFixed(6)}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>x₃</span>
+
+                        <strong>
+                            ${x3.toFixed(6)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+    } else {
+
+        output += `
+            <div class="status-card warning-card">
+
+                <h2>
+                    ⚠ Maximum Iterations Reached
+                </h2>
+
+                <p>
+                    The method did not reach the selected
+                    tolerance within
+                    ${maxIterations}
+                    iterations.
+                </p>
+
+                <div class="status-warning">
+
+                    ● Try a different initial guess,
+                    tolerance, or check the matrix
+                    for convergence.
+
+                </div>
+
+            </div>
+        `;
     }
 
-}
-
-.info-panel h2 {
-    margin-top: 0;
-}
-
-.info-panel h3 {
-    margin-top: 20px;
-
-    color: #ffffff;
-}
-
-.info-panel p {
-    margin-bottom: 10px;
-}
-
-.info-panel ul {
-    padding-left: 20px;
-
-    color: #bdb8d6;
-
-    line-height: 1.8;
-}
-
-.info-note {
-    opacity: 0.7;
-
-    font-size: 13px;
-}
-
-.version {
-    opacity: 0.45;
-
-    font-size: 12px;
+    result.innerHTML = output;
 }
 
 
-/* ==========================================
-   MATRIX
-========================================== */
+// =========================
+// INFO DROPDOWN
+// =========================
 
-.matrix {
-    display: grid;
+function toggleInfo() {
 
-    grid-template-columns:
-        repeat(3, 1fr)
-        40px
-        1fr;
+    const infoPanel =
+        document.getElementById("infoPanel");
 
-    gap: 12px;
-
-    align-items: center;
-
-    max-width: 650px;
-
-    margin: auto;
-}
-
-.matrix span {
-    text-align: center;
-
-    font-size: 22px;
-
-    color: #aaa3c7;
+    infoPanel.classList.toggle("show");
 }
 
 
-/* ==========================================
-   INPUTS
-========================================== */
+// =========================
+// ITERATIONS DROPDOWN
+// =========================
 
-input {
-    width: 100%;
+function toggleIterations() {
 
-    padding: 12px;
+    const panel =
+        document.getElementById("iterationsPanel");
 
-    background:
-        rgba(255, 255, 255, 0.05);
+    const arrow =
+        document.getElementById("iterationsArrow");
 
-    border:
-        1px solid rgba(150, 120, 255, 0.25);
+    panel.classList.toggle("show");
 
-    border-radius: 9px;
+    if (panel.classList.contains("show")) {
 
-    color: #ffffff;
+        arrow.textContent = "▼";
 
-    font-size: 15px;
+    } else {
 
-    outline: none;
-
-    transition: 0.2s ease;
-}
-
-input::placeholder {
-    color: #77718f;
-}
-
-input:focus {
-    border-color:
-        rgba(160, 120, 255, 0.8);
-
-    background:
-        rgba(120, 80, 255, 0.08);
-
-    box-shadow:
-        0 0 12px rgba(120, 80, 255, 0.15);
-}
-
-
-/* ==========================================
-   INVALID INPUT
-========================================== */
-
-input.input-error {
-    border-color:
-        #ff4d6d !important;
-
-    box-shadow:
-        0 0 12px rgba(255, 77, 109, 0.25);
-}
-
-
-/* ==========================================
-   INITIAL VALUES
-========================================== */
-
-.initial {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 15px;
-}
-
-.initial label {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 7px;
-
-    color: #aaa3c7;
-}
-
-
-/* ==========================================
-   SETTINGS
-========================================== */
-
-.settings {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 15px;
-
-    margin-top: 25px;
-}
-
-.settings label {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    color: #aaa3c7;
-}
-
-.settings input {
-    max-width: 180px;
-}
-
-
-/* ==========================================
-   CALCULATE BUTTON
-========================================== */
-
-.container > button:not(.info-button) {
-    width: 100%;
-
-    margin-top: 30px;
-
-    padding: 14px;
-
-    border: none;
-
-    border-radius: 11px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #6d42ff,
-            #3d6cff
-        );
-
-    color: #ffffff;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: 0.25s ease;
-}
-
-.container > button:not(.info-button):hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 25px rgba(80, 70, 255, 0.3);
-}
-
-.container > button:not(.info-button):active {
-    transform: translateY(0);
-}
-
-
-/* ==========================================
-   RESULT
-========================================== */
-
-#result {
-    margin-top: 35px;
-}
-
-
-/* ==========================================
-   STATUS CARDS
-========================================== */
-
-.status-card {
-    margin-top: 25px;
-
-    padding: 20px;
-
-    border-radius: 14px;
-
-    background:
-        rgba(255, 255, 255, 0.04);
-
-    border:
-        1px solid rgba(255, 255, 255, 0.08);
-}
-
-.status-card h2 {
-    margin-top: 0;
-}
-
-.status-card p {
-    margin: 7px 0;
-}
-
-
-/* ==========================================
-   ERROR
-========================================== */
-
-.error-card {
-    border-color:
-        rgba(255, 77, 109, 0.35);
-
-    background:
-        rgba(255, 77, 109, 0.06);
-}
-
-.error-card h2 {
-    color: #ff7189;
-}
-
-
-/* ==========================================
-   WARNING
-========================================== */
-
-.warning-card {
-    border-color:
-        rgba(255, 190, 70, 0.35);
-
-    background:
-        rgba(255, 190, 70, 0.05);
-}
-
-.warning-card h2 {
-    color: #ffc857;
-}
-
-
-/* ==========================================
-   SUCCESS
-========================================== */
-
-.success-card {
-    border-color:
-        rgba(100, 220, 160, 0.3);
-
-    background:
-        rgba(100, 220, 160, 0.05);
-}
-
-.success-card h2 {
-    color: #72e0a5;
-}
-
-
-/* ==========================================
-   STATUS MESSAGES
-========================================== */
-
-.status-good {
-    margin-top: 15px;
-
-    padding: 10px 12px;
-
-    border-radius: 8px;
-
-    background:
-        rgba(100, 220, 160, 0.08);
-
-    color: #72e0a5;
-
-    font-size: 13px;
-}
-
-.status-warning {
-    margin-top: 15px;
-
-    padding: 10px 12px;
-
-    border-radius: 8px;
-
-    background:
-        rgba(255, 190, 70, 0.08);
-
-    color: #ffc857;
-
-    font-size: 13px;
-}
-
-
-/* ==========================================
-   ITERATIONS DROPDOWN
-========================================== */
-
-.iterations-section {
-    margin-top: 25px;
-}
-
-
-/* DROPDOWN BUTTON */
-
-.iterations-toggle {
-    width: 100% !important;
-
-    margin: 0 !important;
-
-    padding: 14px 18px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    text-align: left;
-
-    background:
-        rgba(120, 80, 255, 0.08) !important;
-
-    border:
-        1px solid rgba(140, 110, 255, 0.25) !important;
-
-    border-radius: 11px;
-
-    color: #ffffff;
-
-    font-size: 14px;
-
-    cursor: pointer;
-
-    box-shadow: none !important;
-
-    transform: none !important;
-
-    transition: 0.25s ease;
-}
-
-.iterations-toggle:hover {
-    background:
-        rgba(120, 80, 255, 0.16) !important;
-
-    border-color:
-        rgba(160, 130, 255, 0.5) !important;
-}
-
-.iterations-toggle:active {
-    transform: none !important;
-}
-
-
-/* ARROW */
-
-#iterationsArrow {
-    width: 12px;
-
-    color: #a992ff;
-
-    font-size: 12px;
-}
-
-
-/* ==========================================
-   ITERATIONS PANEL
-========================================== */
-
-/*
-   HIDDEN BY DEFAULT.
-   JavaScript adds .show when clicked.
-*/
-
-.iterations-panel {
-    display: none !important;
-
-    margin-top: 12px;
-}
-
-
-/* OPEN */
-
-.iterations-panel.show {
-    display: block !important;
-
-    overflow-x: auto;
-
-    animation:
-        iterationsDrop 0.25s ease;
-}
-
-@keyframes iterationsDrop {
-
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(-6px);
+        arrow.textContent = "▶";
     }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-
-}
-
-
-/* ==========================================
-   ITERATION TABLE
-========================================== */
-
-.iterations-panel table {
-    width: 100%;
-
-    margin-top: 0;
-
-    border-collapse: collapse;
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.03);
-}
-
-th,
-td {
-    padding: 12px;
-
-    text-align: center;
-
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.07);
-}
-
-th {
-    color: #c9c2e8;
-
-    background:
-        rgba(120, 80, 255, 0.12);
-}
-
-td {
-    color: #aaa3c7;
-}
-
-tr:last-child td {
-    border-bottom: none;
-}
-
-
-/* ==========================================
-   SOLUTION CARD
-========================================== */
-
-.solution-card {
-    margin-top: 25px;
-
-    padding: 22px;
-
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(100, 70, 255, 0.12),
-            rgba(50, 100, 255, 0.08)
-        );
-
-    border:
-        1px solid rgba(130, 110, 255, 0.35);
-
-    box-shadow:
-        0 10px 35px rgba(60, 50, 180, 0.12);
-}
-
-
-/* ==========================================
-   SOLUTION HEADER
-========================================== */
-
-.solution-header {
-    display: flex;
-
-    align-items: center;
-
-    gap: 13px;
-}
-
-.solution-icon {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    width: 35px;
-
-    height: 35px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(100, 220, 160, 0.12);
-
-    color: #72e0a5;
-
-    font-weight: bold;
-}
-
-.solution-title {
-    font-size: 18px;
-
-    font-weight: bold;
-}
-
-.solution-subtitle {
-    margin-top: 3px;
-
-    color: #9992b8;
-
-    font-size: 13px;
-}
-
-
-/* ==========================================
-   SOLUTION VALUES
-========================================== */
-
-.solution-values {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 12px;
-
-    margin-top: 22px;
-}
-
-.solution-values > div {
-    padding: 15px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255, 255, 255, 0.04);
-
-    text-align: center;
-}
-
-.solution-values span {
-    display: block;
-
-    margin-bottom: 6px;
-
-    color: #9992b8;
-
-    font-size: 13px;
-}
-
-.solution-values strong {
-    font-size: 18px;
-}
-
-
-/* ==========================================
-   FOOTER
-========================================== */
-
-footer {
-    margin-top: 40px;
-
-    padding-bottom: 5px;
-
-    text-align: center;
-
-    font-size: 11px;
-
-    color: #aaa3c7;
-
-    opacity: 0.45;
-
-    letter-spacing: 0.3px;
-}
-
-
-/* ==========================================
-   MOBILE
-========================================== */
-
-@media (max-width: 650px) {
-
-    .container {
-        padding: 22px;
-
-        margin: 20px auto;
-    }
-
-    h1 {
-        font-size: 27px;
-    }
-
-    .top-bar {
-        flex-direction: column;
-    }
-
-    .info-button {
-        align-self: flex-end;
-    }
-
-    .matrix {
-        grid-template-columns:
-            repeat(3, 1fr)
-            25px
-            1fr;
-
-        gap: 7px;
-    }
-
-    .initial {
-        grid-template-columns: 1fr;
-    }
-
-    .settings {
-        grid-template-columns: 1fr;
-    }
-
-    .settings label {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-    .settings input {
-        max-width: none;
-    }
-
-    .solution-values {
-        grid-template-columns: 1fr;
-    }
-
-    table {
-        font-size: 13px;
-    }
-
-    th,
-    td {
-        padding: 8px 4px;
-    }
-
 }

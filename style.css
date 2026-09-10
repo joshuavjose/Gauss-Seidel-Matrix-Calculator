@@ -1,57 +1,30 @@
-/* ==========================================
-   GENERAL
-========================================== */
-
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    min-height: 100vh;
-
     font-family: Arial, sans-serif;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #21134a 0%,
-            #0b0920 45%,
-            #050510 100%
-        );
-
-    color: #ffffff;
+    background: linear-gradient(135deg, #080014, #0d102b, #06151f);
+    color: #f5f5ff;
+    min-height: 100vh;
 }
 
-
-/* ==========================================
-   MAIN CONTAINER
-========================================== */
-
 .container {
-    width: min(900px, 92%);
-
+    width: 90%;
+    max-width: 900px;
     margin: 40px auto;
-
-    padding: 35px;
-
-    background: rgba(15, 12, 35, 0.88);
-
-    border: 1px solid rgba(150, 120, 255, 0.25);
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(100, 60, 255, 0.08);
-
+    padding: 30px;
+    background: rgba(15, 15, 35, 0.88);
+    border: 1px solid rgba(150, 100, 255, 0.25);
+    border-radius: 18px;
+    box-shadow: 0 0 40px rgba(100, 50, 255, 0.15);
     backdrop-filter: blur(10px);
 }
 
-
-/* ==========================================
+/* =========================
    TOP BAR
-========================================== */
+========================= */
 
 .top-bar {
     display: flex;
@@ -60,812 +33,482 @@ body {
     gap: 20px;
 }
 
-
-/* ==========================================
-   HEADINGS
-========================================== */
-
 h1 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 32px;
+    margin: 0;
+    font-size: 38px;
+
+    background: linear-gradient(
+        90deg,
+        #a855f7,
+        #6366f1,
+        #22d3ee
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    font-weight: 800;
 }
 
-h2 {
-    margin-top: 32px;
-    margin-bottom: 15px;
-    font-size: 20px;
+.top-bar p {
+    color: #aaa9c5;
+    margin-top: 8px;
 }
 
-h3 {
-    margin-bottom: 8px;
-}
-
-p {
-    color: #bdb8d6;
-    line-height: 1.6;
-}
-
-
-/* ==========================================
+/* =========================
    INFO BUTTON
-========================================== */
+========================= */
 
 .info-button {
-    width: auto;
-    min-width: 85px;
-
+    background: rgba(120, 70, 255, 0.15);
+    border: 1px solid rgba(150, 100, 255, 0.45);
+    color: #d9ccff;
     padding: 10px 16px;
-
-    background: rgba(120, 80, 255, 0.12);
-
-    border: 1px solid rgba(150, 120, 255, 0.35);
-
     border-radius: 10px;
-
-    color: #ffffff;
-
-    font-size: 14px;
-
     cursor: pointer;
-
-    transition: 0.25s ease;
+    font-size: 14px;
+    transition: 0.25s;
 }
 
 .info-button:hover {
-    background: rgba(120, 80, 255, 0.25);
-
-    border-color: rgba(170, 140, 255, 0.7);
-
+    background: rgba(140, 90, 255, 0.3);
     transform: translateY(-2px);
-
-    box-shadow:
-        0 5px 20px rgba(100, 70, 255, 0.2);
+    box-shadow: 0 5px 20px rgba(120, 70, 255, 0.25);
 }
 
-.info-button:active {
-    transform: translateY(0);
-}
-
-
-/* ==========================================
+/* =========================
    INFO PANEL
-========================================== */
+========================= */
 
 .info-panel {
-    display: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    padding: 0 20px;
 
-    margin-top: 18px;
-
-    padding: 20px;
-
-    background: rgba(25, 20, 50, 0.8);
-
-    border: 1px solid rgba(140, 110, 255, 0.35);
-
+    background: rgba(20, 18, 45, 0.9);
+    border: 1px solid transparent;
     border-radius: 14px;
 
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.25);
+    transition:
+        max-height 0.4s ease,
+        opacity 0.3s ease,
+        margin-top 0.4s ease,
+        padding 0.4s ease;
 }
-
-
-/* INFO PANEL OPEN */
 
 .info-panel.show {
-    display: block;
-
-    animation: infoDrop 0.25s ease;
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 20px;
+    padding: 20px;
+    border-color: rgba(150, 100, 255, 0.25);
 }
-
-
-/* INFO ANIMATION */
-
-@keyframes infoDrop {
-
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
-
-/* INFO CONTENT */
 
 .info-panel h2 {
     margin-top: 0;
+    color: #c4b5fd;
 }
 
 .info-panel h3 {
-    margin-top: 20px;
-    color: #ffffff;
+    color: #a78bfa;
+    margin-bottom: 6px;
 }
 
-.info-panel p {
-    margin-bottom: 10px;
+.info-panel p,
+.info-panel li {
+    color: #b9b8cf;
+    line-height: 1.6;
 }
 
 .info-panel ul {
     padding-left: 20px;
-
-    color: #bdb8d6;
-
-    line-height: 1.8;
 }
 
 .info-note {
-    opacity: 0.7;
     font-size: 13px;
+    color: #88879e !important;
 }
 
 .version {
-    opacity: 0.45;
     font-size: 12px;
+    color: #68677d !important;
 }
 
+/* =========================
+   HEADINGS
+========================= */
 
-/* ==========================================
+h2 {
+    color: #d9d4ff;
+    margin-top: 30px;
+}
+
+/* =========================
    MATRIX
-========================================== */
+========================= */
 
 .matrix {
     display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr)
-        40px
-        1fr;
-
+    grid-template-columns: repeat(3, 1fr) 30px 1fr;
     gap: 12px;
-
     align-items: center;
+}
 
-    max-width: 650px;
+.matrix input,
+.initial input,
+.settings input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 9px;
+    border: 1px solid #383653;
+    background: #111126;
+    color: white;
+    outline: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
 
-    margin: auto;
+.matrix input:focus,
+.initial input:focus,
+.settings input:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
 }
 
 .matrix span {
     text-align: center;
-
-    font-size: 22px;
-
-    color: #aaa3c7;
+    color: #aaa8c2;
+    font-size: 20px;
 }
 
-
-/* ==========================================
-   INPUTS
-========================================== */
-
-input {
-    width: 100%;
-
-    padding: 12px;
-
-    background: rgba(255, 255, 255, 0.05);
-
-    border: 1px solid rgba(150, 120, 255, 0.25);
-
-    border-radius: 9px;
-
-    color: #ffffff;
-
-    font-size: 15px;
-
-    outline: none;
-
-    transition: 0.2s ease;
-}
-
-input::placeholder {
-    color: #77718f;
-}
-
-input:focus {
-    border-color: rgba(160, 120, 255, 0.8);
-
-    background: rgba(120, 80, 255, 0.08);
-
-    box-shadow:
-        0 0 12px rgba(120, 80, 255, 0.15);
-}
-
-
-/* ==========================================
-   INVALID INPUT
-========================================== */
-
-input.input-error {
-    border-color: #ff4d6d !important;
-
-    box-shadow:
-        0 0 12px rgba(255, 77, 109, 0.25);
-}
-
-
-/* ==========================================
+/* =========================
    INITIAL VALUES
-========================================== */
+========================= */
 
 .initial {
     display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
 
 .initial label {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 7px;
-
-    color: #aaa3c7;
+    color: #aaa8c2;
+    font-size: 14px;
 }
 
-
-/* ==========================================
+/* =========================
    SETTINGS
-========================================== */
+========================= */
 
 .settings {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
-
     margin-top: 25px;
 }
 
 .settings label {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    color: #aaa3c7;
+    color: #aaa8c2;
+    font-size: 14px;
 }
 
-.settings input {
-    max-width: 180px;
+/* =========================
+   MAIN BUTTON
+========================= */
+
+button {
+    font-family: inherit;
 }
 
-
-/* ==========================================
-   MAIN CALCULATE BUTTON
-========================================== */
-
-.container > button:not(.info-button) {
+.container > button {
     width: 100%;
-
-    margin-top: 30px;
-
+    margin-top: 25px;
     padding: 14px;
-
     border: none;
+    border-radius: 10px;
 
-    border-radius: 11px;
+    background: linear-gradient(
+        90deg,
+        #7c3aed,
+        #6366f1
+    );
 
-    background:
-        linear-gradient(
-            135deg,
-            #6d42ff,
-            #3d6cff
-        );
-
-    color: #ffffff;
-
+    color: white;
     font-size: 16px;
-
     font-weight: bold;
-
     cursor: pointer;
 
-    transition: 0.25s ease;
+    transition: 0.25s;
 }
 
-.container > button:not(.info-button):hover {
+.container > button:hover {
     transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 25px rgba(80, 70, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
 }
 
-.container > button:not(.info-button):active {
-    transform: translateY(0);
-}
-
-
-/* ==========================================
-   RESULT AREA
-========================================== */
-
-#result {
-    margin-top: 35px;
-}
-
-
-/* ==========================================
+/* =========================
    STATUS CARDS
-========================================== */
+========================= */
 
 .status-card {
     margin-top: 25px;
-
     padding: 20px;
-
     border-radius: 14px;
-
-    background: rgba(255, 255, 255, 0.04);
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid;
 }
 
 .status-card h2 {
     margin-top: 0;
 }
 
-.status-card p {
-    margin: 7px 0;
+.success-card {
+    background: rgba(20, 100, 70, 0.12);
+    border-color: rgba(50, 220, 150, 0.3);
 }
-
-
-/* ==========================================
-   ERROR CARD
-========================================== */
-
-.error-card {
-    border-color: rgba(255, 77, 109, 0.35);
-
-    background:
-        rgba(255, 77, 109, 0.06);
-}
-
-.error-card h2 {
-    color: #ff7189;
-}
-
-
-/* ==========================================
-   WARNING CARD
-========================================== */
 
 .warning-card {
-    border-color: rgba(255, 190, 70, 0.35);
-
-    background:
-        rgba(255, 190, 70, 0.05);
+    background: rgba(150, 100, 20, 0.12);
+    border-color: rgba(255, 190, 70, 0.3);
 }
 
-.warning-card h2 {
-    color: #ffc857;
+.error-card {
+    background: rgba(150, 30, 50, 0.12);
+    border-color: rgba(255, 80, 100, 0.3);
 }
-
-
-/* ==========================================
-   SUCCESS CARD
-========================================== */
-
-.success-card {
-    border-color: rgba(100, 220, 160, 0.3);
-
-    background:
-        rgba(100, 220, 160, 0.05);
-}
-
-.success-card h2 {
-    color: #72e0a5;
-}
-
-
-/* ==========================================
-   STATUS MESSAGES
-========================================== */
 
 .status-good {
-    margin-top: 15px;
-
-    padding: 10px 12px;
-
-    border-radius: 8px;
-
-    background: rgba(100, 220, 160, 0.08);
-
-    color: #72e0a5;
-
-    font-size: 13px;
+    margin-top: 12px;
+    color: #6ee7b7;
 }
 
 .status-warning {
-    margin-top: 15px;
-
-    padding: 10px 12px;
-
-    border-radius: 8px;
-
-    background: rgba(255, 190, 70, 0.08);
-
-    color: #ffc857;
-
-    font-size: 13px;
+    margin-top: 12px;
+    color: #fbbf24;
 }
 
+/* =========================
+   INPUT ERRORS
+========================= */
 
-/* ==========================================
-   COLLAPSIBLE ITERATIONS
-========================================== */
+.input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.25) !important;
+}
+
+/* =========================
+   ITERATIONS
+========================= */
 
 .iterations-section {
     margin-top: 25px;
 }
 
-
-/* ITERATIONS BUTTON */
-
 .iterations-toggle {
-    width: 100% !important;
-
-    margin: 0 !important;
-
+    width: 100%;
     padding: 14px 18px;
 
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 
-    text-align: left;
+    background: rgba(100, 70, 180, 0.12);
+    border: 1px solid rgba(140, 110, 220, 0.3);
+    border-radius: 10px;
 
-    background:
-        rgba(120, 80, 255, 0.08) !important;
-
-    border:
-        1px solid rgba(140, 110, 255, 0.25) !important;
-
-    border-radius: 11px;
-
-    color: #ffffff;
-
-    font-size: 14px;
-
+    color: #d8d4f0;
+    font-size: 15px;
     cursor: pointer;
 
-    box-shadow: none !important;
-
-    transform: none !important;
-
-    transition: 0.25s ease;
+    transition: 0.25s;
 }
 
 .iterations-toggle:hover {
-    background:
-        rgba(120, 80, 255, 0.16) !important;
-
-    border-color:
-        rgba(160, 130, 255, 0.5) !important;
+    background: rgba(120, 80, 220, 0.22);
+    transform: translateY(-1px);
 }
-
-.iterations-toggle:active {
-    transform: none !important;
-}
-
-
-/* ARROW */
 
 #iterationsArrow {
-    color: #a992ff;
-
-    font-size: 12px;
-
-    width: 12px;
+    color: #a78bfa;
 }
-
-
-/* ==========================================
-   ITERATIONS PANEL
-========================================== */
-
-/*
-   IMPORTANT:
-   The table is completely hidden until
-   JavaScript adds the "show" class.
-*/
 
 .iterations-panel {
-    display: none !important;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
 
-    margin-top: 12px;
+    transition:
+        max-height 0.45s ease,
+        opacity 0.3s ease;
 }
-
-
-/* OPEN */
 
 .iterations-panel.show {
-    display: block !important;
-
+    max-height: 5000px;
+    opacity: 1;
+    margin-top: 15px;
     overflow-x: auto;
-
-    animation:
-        iterationsDrop 0.25s ease;
 }
 
+/* =========================
+   TABLE
+========================= */
 
-/* ITERATION ANIMATION */
-
-@keyframes iterationsDrop {
-
-    from {
-        opacity: 0;
-        transform: translateY(-6px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
-
-/* ==========================================
-   ITERATION TABLE
-========================================== */
-
-.iterations-panel table {
+table {
     width: 100%;
-
-    margin-top: 0;
-
     border-collapse: collapse;
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.03);
+    background: rgba(10, 10, 25, 0.8);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 th,
 td {
-    padding: 12px;
-
+    padding: 11px;
     text-align: center;
-
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.07);
+    border-bottom: 1px solid #292741;
 }
 
 th {
-    color: #c9c2e8;
-
-    background:
-        rgba(120, 80, 255, 0.12);
+    background: rgba(100, 70, 180, 0.2);
+    color: #c4b5fd;
 }
 
 td {
-    color: #aaa3c7;
+    color: #c8c6d8;
 }
 
-tr:last-child td {
-    border-bottom: none;
+tr:hover td {
+    background: rgba(120, 90, 220, 0.08);
 }
 
-
-/* ==========================================
+/* =========================
    SOLUTION CARD
-========================================== */
+========================= */
 
 .solution-card {
     margin-top: 25px;
+    padding: 25px;
 
-    padding: 22px;
+    background: rgba(50, 30, 100, 0.18);
+    border: 1px solid rgba(150, 110, 255, 0.35);
+    border-radius: 15px;
 
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(100, 70, 255, 0.12),
-            rgba(50, 100, 255, 0.08)
-        );
-
-    border:
-        1px solid rgba(130, 110, 255, 0.35);
-
-    box-shadow:
-        0 10px 35px rgba(60, 50, 180, 0.12);
+    box-shadow: 0 0 25px rgba(100, 70, 220, 0.1);
 }
-
-
-/* SOLUTION HEADER */
 
 .solution-header {
     display: flex;
-
     align-items: center;
-
-    gap: 13px;
+    gap: 14px;
 }
 
 .solution-icon {
+    width: 42px;
+    height: 42px;
+
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
-    width: 35px;
-
-    height: 35px;
 
     border-radius: 50%;
 
-    background:
-        rgba(100, 220, 160, 0.12);
+    background: rgba(50, 220, 150, 0.15);
+    color: #6ee7b7;
 
-    color: #72e0a5;
-
-    font-weight: bold;
+    font-size: 22px;
 }
 
 .solution-title {
-    font-size: 18px;
-
+    font-size: 20px;
     font-weight: bold;
+    color: #e9e7ff;
 }
 
 .solution-subtitle {
     margin-top: 3px;
-
-    color: #9992b8;
-
-    font-size: 13px;
+    color: #9694ad;
+    font-size: 14px;
 }
-
-
-/* SOLUTION VALUES */
 
 .solution-values {
     display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 12px;
-
-    margin-top: 22px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
 }
 
-.solution-values > div {
-    padding: 15px;
-
+.solution-values div {
+    padding: 18px;
+    background: rgba(10, 10, 25, 0.55);
     border-radius: 10px;
-
-    background:
-        rgba(255, 255, 255, 0.04);
-
     text-align: center;
 }
 
 .solution-values span {
     display: block;
-
-    margin-bottom: 6px;
-
-    color: #9992b8;
-
-    font-size: 13px;
+    color: #9694ad;
+    margin-bottom: 8px;
 }
 
 .solution-values strong {
-    font-size: 18px;
+    font-size: 22px;
+    color: #ddd6fe;
 }
 
-
-/* ==========================================
+/* =========================
    FOOTER
-========================================== */
+========================= */
 
 footer {
-    margin-top: 40px;
-
-    padding-bottom: 5px;
-
+    margin-top: 35px;
     text-align: center;
-
+    color: #626078;
     font-size: 11px;
-
-    color: #aaa3c7;
-
-    opacity: 0.45;
-
-    letter-spacing: 0.3px;
 }
 
-
-/* ==========================================
+/* =========================
    MOBILE
-========================================== */
+========================= */
 
 @media (max-width: 650px) {
 
     .container {
-        padding: 22px;
-
+        width: 94%;
+        padding: 20px;
         margin: 20px auto;
     }
-
 
     .top-bar {
         flex-direction: column;
     }
 
+    h1 {
+        font-size: 30px;
+    }
 
     .info-button {
         align-self: flex-end;
     }
 
-
     .matrix {
-        grid-template-columns:
-            repeat(3, 1fr)
-            25px
-            1fr;
-
-        gap: 7px;
+        grid-template-columns: repeat(3, 1fr);
     }
 
-
-    .initial {
-        grid-template-columns: 1fr;
+    .matrix span {
+        display: none;
     }
 
-
-    .settings {
-        grid-template-columns: 1fr;
+    .matrix input:nth-child(4),
+    .matrix input:nth-child(9),
+    .matrix input:nth-child(14) {
+        grid-column: span 3;
     }
 
-
-    .settings label {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-
-    .settings input {
-        max-width: none;
-    }
-
-
+    .initial,
+    .settings,
     .solution-values {
         grid-template-columns: 1fr;
     }
-
-
-    table {
-        font-size: 13px;
-    }
-
-
-    th,
-    td {
-        padding: 8px 4px;
-    }
-
 }
