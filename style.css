@@ -55,11 +55,8 @@ body {
 
 .top-bar {
     display: flex;
-
     justify-content: space-between;
-
     align-items: flex-start;
-
     gap: 20px;
 }
 
@@ -70,17 +67,13 @@ body {
 
 h1 {
     margin-top: 0;
-
     margin-bottom: 8px;
-
     font-size: 32px;
 }
 
 h2 {
     margin-top: 32px;
-
     margin-bottom: 15px;
-
     font-size: 20px;
 }
 
@@ -90,7 +83,6 @@ h3 {
 
 p {
     color: #bdb8d6;
-
     line-height: 1.6;
 }
 
@@ -101,7 +93,6 @@ p {
 
 .info-button {
     width: auto;
-
     min-width: 85px;
 
     padding: 10px 16px;
@@ -142,45 +133,46 @@ p {
 ========================================== */
 
 .info-panel {
-    max-height: 0;
-
-    overflow: hidden;
-
-    opacity: 0;
-
-    margin-top: 0;
-
-    padding: 0 20px;
-
-    background: rgba(25, 20, 50, 0.8);
-
-    border: 1px solid transparent;
-
-    border-radius: 14px;
-
-    transition:
-        max-height 0.4s ease,
-        opacity 0.3s ease,
-        margin 0.4s ease,
-        padding 0.4s ease;
-}
-
-
-/* OPEN INFO PANEL */
-
-.info-panel.show {
-    max-height: 600px;
-
-    opacity: 1;
+    display: none;
 
     margin-top: 18px;
 
     padding: 20px;
 
-    border-color: rgba(140, 110, 255, 0.35);
+    background: rgba(25, 20, 50, 0.8);
+
+    border: 1px solid rgba(140, 110, 255, 0.35);
+
+    border-radius: 14px;
 
     box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* INFO PANEL OPEN */
+
+.info-panel.show {
+    display: block;
+
+    animation: infoDrop 0.25s ease;
+}
+
+
+/* INFO ANIMATION */
+
+@keyframes infoDrop {
+
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
 }
 
 
@@ -192,7 +184,6 @@ p {
 
 .info-panel h3 {
     margin-top: 20px;
-
     color: #ffffff;
 }
 
@@ -210,13 +201,11 @@ p {
 
 .info-note {
     opacity: 0.7;
-
     font-size: 13px;
 }
 
 .version {
     opacity: 0.45;
-
     font-size: 12px;
 }
 
@@ -358,7 +347,7 @@ input.input-error {
 
 
 /* ==========================================
-   CALCULATE BUTTON
+   MAIN CALCULATE BUTTON
 ========================================== */
 
 .container > button:not(.info-button) {
@@ -518,21 +507,137 @@ input.input-error {
 
 
 /* ==========================================
+   COLLAPSIBLE ITERATIONS
+========================================== */
+
+.iterations-section {
+    margin-top: 25px;
+}
+
+
+/* ITERATIONS BUTTON */
+
+.iterations-toggle {
+    width: 100% !important;
+
+    margin: 0 !important;
+
+    padding: 14px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    text-align: left;
+
+    background:
+        rgba(120, 80, 255, 0.08) !important;
+
+    border:
+        1px solid rgba(140, 110, 255, 0.25) !important;
+
+    border-radius: 11px;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    box-shadow: none !important;
+
+    transform: none !important;
+
+    transition: 0.25s ease;
+}
+
+.iterations-toggle:hover {
+    background:
+        rgba(120, 80, 255, 0.16) !important;
+
+    border-color:
+        rgba(160, 130, 255, 0.5) !important;
+}
+
+.iterations-toggle:active {
+    transform: none !important;
+}
+
+
+/* ARROW */
+
+#iterationsArrow {
+    color: #a992ff;
+
+    font-size: 12px;
+
+    width: 12px;
+}
+
+
+/* ==========================================
+   ITERATIONS PANEL
+========================================== */
+
+/*
+   IMPORTANT:
+   The table is completely hidden until
+   JavaScript adds the "show" class.
+*/
+
+.iterations-panel {
+    display: none !important;
+
+    margin-top: 12px;
+}
+
+
+/* OPEN */
+
+.iterations-panel.show {
+    display: block !important;
+
+    overflow-x: auto;
+
+    animation:
+        iterationsDrop 0.25s ease;
+}
+
+
+/* ITERATION ANIMATION */
+
+@keyframes iterationsDrop {
+
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ==========================================
    ITERATION TABLE
 ========================================== */
 
-table {
+.iterations-panel table {
     width: 100%;
 
-    margin-top: 15px;
+    margin-top: 0;
 
     border-collapse: collapse;
 
-    overflow: hidden;
-
     border-radius: 12px;
 
-    background: rgba(255, 255, 255, 0.03);
+    background:
+        rgba(255, 255, 255, 0.03);
 }
 
 th,
@@ -610,7 +715,8 @@ tr:last-child td {
 
     border-radius: 50%;
 
-    background: rgba(100, 220, 160, 0.12);
+    background:
+        rgba(100, 220, 160, 0.12);
 
     color: #72e0a5;
 
@@ -704,13 +810,16 @@ footer {
         margin: 20px auto;
     }
 
+
     .top-bar {
         flex-direction: column;
     }
 
+
     .info-button {
         align-self: flex-end;
     }
+
 
     .matrix {
         grid-template-columns:
@@ -721,13 +830,16 @@ footer {
         gap: 7px;
     }
 
+
     .initial {
         grid-template-columns: 1fr;
     }
 
+
     .settings {
         grid-template-columns: 1fr;
     }
+
 
     .settings label {
         flex-direction: column;
@@ -735,20 +847,25 @@ footer {
         align-items: flex-start;
     }
 
+
     .settings input {
         max-width: none;
     }
+
 
     .solution-values {
         grid-template-columns: 1fr;
     }
 
+
     table {
         font-size: 13px;
     }
+
 
     th,
     td {
         padding: 8px 4px;
     }
+
 }
