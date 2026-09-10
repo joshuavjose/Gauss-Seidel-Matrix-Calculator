@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gauss-Seidel Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Gauss-Seidel Calculator</h1>
+        <p>Solve a 3 × 3 system using the Gauss-Seidel method.</p>
+
+        <h2>Coefficient Matrix</h2>
+
+        <div class="matrix">
+            <input id="a11" type="number" placeholder="a11">
+            <input id="a12" type="number" placeholder="a12">
+            <input id="a13" type="number" placeholder="a13">
+            <span>=</span>
+            <input id="b1" type="number" placeholder="b1">
+
+            <input id="a21" type="number" placeholder="a21">
+            <input id="a22" type="number" placeholder="a22">
+            <input id="a23" type="number" placeholder="a23">
+            <span>=</span>
+            <input id="b2" type="number" placeholder="b2">
+
+            <input id="a31" type="number" placeholder="a31">
+            <input id="a32" type="number" placeholder="a32">
+            <input id="a33" type="number" placeholder="a33">
+            <span>=</span>
+            <input id="b3" type="number" placeholder="b3">
+        </div>
+
+        <h2>Initial Values</h2>
+
+        <div class="initial">
+            x₁ <input id="x1" type="number" value="0">
+            x₂ <input id="x2" type="number" value="0">
+            x₃ <input id="x3" type="number" value="0">
+        </div>
+
+        <div class="settings">
+            <label>
+                Tolerance:
+                <input id="tolerance" type="number" value="0.0001" step="0.0001">
+            </label>
+
+            <label>
+                Max Iterations:
+                <input id="maxIterations" type="number" value="100">
+            </label>
+        </div>
+
+        <button onclick="calculate()">Calculate</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
