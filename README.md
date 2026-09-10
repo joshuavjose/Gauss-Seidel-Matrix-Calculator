@@ -1,38 +1,20 @@
 # 🧮 Gauss-Seidel Calculator
 
-> A small numerical-methods project that turns a little bit of matrix madness into a clean, interactive calculation. ✨
+> A simple interactive web calculator for solving 3 × 3 systems of linear equations using the **Gauss-Seidel iterative method**. 🚀
 
-Welcome! 👋
+## ✨ Features
 
-This is a web-based **3 × 3 Gauss-Seidel Calculator** built to make solving systems of linear equations easier to understand, visualize, and experiment with.
+- 🧮 Solves 3 × 3 linear equation systems
+- 🎯 Custom initial values
+- 🔧 Adjustable tolerance
+- 🔁 Adjustable maximum iterations
+- 📊 Expandable iteration table
+- ✅ Input validation
+- ⚠️ Diagonal dominance & convergence checking
+- 🌙 Modern dark-themed UI
+- 📱 Responsive design
 
-Instead of throwing a bunch of calculations at you, the calculator also lets you peek into the iterations and see how the solution gradually approaches its final value. 🔢
-
----
-
-## 🚀 What Can It Do?
-
-The calculator comes with a few useful tricks:
-
-- 🧮 Solve **3 × 3 systems of linear equations**
-- 🎯 Set your own **initial values**
-- 🔧 Adjust the **convergence tolerance**
-- 🔁 Choose the **maximum number of iterations**
-- 📊 View the complete **iteration table**
-- ✅ Detect whether the system has good convergence conditions
-- ⚠️ Check for **diagonal dominance**
-- 🚫 Detect zero diagonal coefficients
-- 🛡️ Validate user input
-- 📱 Responsive interface for smaller screens
-- 🌙 Dark, modern mathematical dashboard UI
-
-The iteration table is tucked away behind **"View Iterations"**, so your screen doesn't get absolutely destroyed by 500 rows of numbers. 😂
-
----
-
-## 🧠 The Mathematics Behind It
-
-The **Gauss-Seidel method** is an iterative technique used to approximate the solution of a system of linear equations.
+## 🧠 How It Works
 
 For a system:
 
@@ -40,3 +22,68 @@ For a system:
 a₁₁x₁ + a₁₂x₂ + a₁₃x₃ = b₁
 a₂₁x₁ + a₂₂x₂ + a₂₃x₃ = b₂
 a₃₁x₁ + a₃₂x₂ + a₃₃x₃ = b₃
+```
+
+Gauss-Seidel rearranges the equations and repeatedly updates:
+
+```text
+x₁ → x₂ → x₃ → error check → repeat
+```
+
+The calculation stops when the error becomes smaller than the selected tolerance.
+
+## 🎮 How To Use
+
+1. Enter the coefficient matrix and constants.
+2. Enter initial values for x₁, x₂ and x₃.
+3. Set the tolerance and maximum iterations.
+4. Click **Calculate**.
+5. View the final solution and, if needed, expand **View Iterations**.
+
+## 📁 Project Structure
+
+```text
+gauss-seidel-calculator/
+├── index.html
+├── style.css
+├── script.js
+└── README.md
+```
+
+## 🛠️ Built With
+
+- 🌐 HTML5
+- 🎨 CSS3
+- ⚡ JavaScript
+- ☁️ GitHub Pages
+
+No external libraries or frameworks are required.
+
+## 🎓 Purpose
+
+This project was created to explore how a mathematical numerical method can be turned into an interactive web application while making the iteration process easy to understand.
+
+## 🔮 Future Ideas
+
+- 📊 Convergence graphs
+- 🧮 Larger matrices
+- 🔄 Automatic row rearrangement
+- 📋 Copy/export results
+- 🧠 Additional numerical methods
+
+## 👨‍💻 Author
+
+**Joshua V Jose**  
+B.Tech CSE (AI/ML)
+
+Built with mathematics, JavaScript, curiosity, and a suspicious number of debugging sessions. 😂💻
+
+## ⭐ Thanks for Checking It Out!
+
+Keep learning. Keep building.
+
+```text
+Guess → Calculate → Update → Repeat → Converge 🎯
+```
+
+### 🧮 Happy Calculating! ✨
