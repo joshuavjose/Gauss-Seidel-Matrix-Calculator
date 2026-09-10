@@ -1,66 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Gauss-Seidel Calculator</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <div class="container">
-        <h1>Gauss-Seidel Calculator</h1>
-        <p>Solve a 3 × 3 system using the Gauss-Seidel method.</p>
+
+        <!-- ==========================================
+             HEADER
+        =========================================== -->
+
+        <div class="top-bar">
+
+            <div>
+                <h1>Gauss-Seidel Calculator</h1>
+
+                <p>
+                    Solve a 3 × 3 system using the Gauss-Seidel method.
+                </p>
+            </div>
+
+            <button class="info-button" onclick="toggleInfo()">
+                ⓘ Info
+            </button>
+
+        </div>
+
+
+        <!-- ==========================================
+             INFO PANEL
+        =========================================== -->
+
+        <div id="infoPanel" class="info-panel">
+
+            <h2>About this Program</h2>
+
+            <p>
+                This calculator solves a 3 × 3 system of linear equations
+                using the <strong>Gauss-Seidel iterative method</strong>.
+            </p>
+
+            <h3>Features</h3>
+
+            <ul>
+                <li>Custom initial values</li>
+                <li>Adjustable tolerance</li>
+                <li>Iteration tracking</li>
+                <li>Convergence checking</li>
+                <li>Diagonal dominance checking</li>
+            </ul>
+
+            <h3>Author</h3>
+
+            <p>
+                <strong>Joshua V Jose</strong><br>
+                B.Tech CSE (AI/ML)
+            </p>
+
+            <p class="info-note">
+                Built for educational purposes.
+            </p>
+
+            <p class="version">
+                Version 1.0 • 2026
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
+             COEFFICIENT MATRIX
+        =========================================== -->
 
         <h2>Coefficient Matrix</h2>
 
-<div class="matrix">
-    <input id="a11" type="number" placeholder="a₁₁">
-    <input id="a12" type="number" placeholder="a₁₂">
-    <input id="a13" type="number" placeholder="a₁₃">
-    <span>=</span>
-    <input id="b1" type="number" placeholder="b₁">
+        <div class="matrix">
 
-    <input id="a21" type="number" placeholder="a₂₁">
-    <input id="a22" type="number" placeholder="a₂₂">
-    <input id="a23" type="number" placeholder="a₂₃">
-    <span>=</span>
-    <input id="b2" type="number" placeholder="b₂">
+            <!-- Row 1 -->
 
-    <input id="a31" type="number" placeholder="a₃₁">
-    <input id="a32" type="number" placeholder="a₃₂">
-    <input id="a33" type="number" placeholder="a₃₃">
-    <span>=</span>
-    <input id="b3" type="number" placeholder="b₃">
-</div>
+            <input id="a11" type="number" placeholder="a₁₁">
+            <input id="a12" type="number" placeholder="a₁₂">
+            <input id="a13" type="number" placeholder="a₁₃">
+
+            <span>=</span>
+
+            <input id="b1" type="number" placeholder="b₁">
+
+
+            <!-- Row 2 -->
+
+            <input id="a21" type="number" placeholder="a₂₁">
+            <input id="a22" type="number" placeholder="a₂₂">
+            <input id="a23" type="number" placeholder="a₂₃">
+
+            <span>=</span>
+
+            <input id="b2" type="number" placeholder="b₂">
+
+
+            <!-- Row 3 -->
+
+            <input id="a31" type="number" placeholder="a₃₁">
+            <input id="a32" type="number" placeholder="a₃₂">
+            <input id="a33" type="number" placeholder="a₃₃">
+
+            <span>=</span>
+
+            <input id="b3" type="number" placeholder="b₃">
+
+        </div>
+
+
+        <!-- ==========================================
+             INITIAL VALUES
+        =========================================== -->
 
         <h2>Initial Values</h2>
 
         <div class="initial">
-            x₁ <input id="x1" type="number" value="0">
-            x₂ <input id="x2" type="number" value="0">
-            x₃ <input id="x3" type="number" value="0">
+
+            <label>
+                x₁
+                <input id="x1" type="number" value="0">
+            </label>
+
+            <label>
+                x₂
+                <input id="x2" type="number" value="0">
+            </label>
+
+            <label>
+                x₃
+                <input id="x3" type="number" value="0">
+            </label>
+
         </div>
 
+
+        <!-- ==========================================
+             SETTINGS
+        =========================================== -->
+
         <div class="settings">
+
             <label>
                 Tolerance:
-                <input id="tolerance" type="number" value="0.0001" step="0.0001">
+
+                <input
+                    id="tolerance"
+                    type="number"
+                    value="0.0001"
+                    step="0.0001"
+                >
             </label>
 
             <label>
                 Max Iterations:
-                <input id="maxIterations" type="number" value="100">
+
+                <input
+                    id="maxIterations"
+                    type="number"
+                    value="100"
+                >
             </label>
+
         </div>
 
-        <button onclick="calculate()">Calculate</button>
+
+        <!-- ==========================================
+             CALCULATE BUTTON
+        =========================================== -->
+
+        <button onclick="calculate()">
+            Calculate
+        </button>
+
+
+        <!-- ==========================================
+             RESULTS
+        =========================================== -->
 
         <div id="result"></div>
+
+
+        <!-- ==========================================
+             FOOTER
+        =========================================== -->
+
+        <footer>
+            © 2026 Joshua V Jose • Gauss-Seidel Calculator
+        </footer>
+
     </div>
+
+
+    <!-- JAVASCRIPT -->
 
     <script src="script.js"></script>
 
 </body>
+
 </html>
