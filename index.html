@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Gauss-Seidel Calculator</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,33 +11,16 @@
 
     <div class="container">
 
-        <!-- ==========================================
-             HEADER
-        =========================================== -->
-
         <div class="top-bar">
-
             <div>
                 <h1>Gauss-Seidel Calculator</h1>
-
-                <p>
-                    Solve a 3 × 3 system using the Gauss-Seidel method.
-                </p>
+                <p>Solve a 3 × 3 system using the Gauss-Seidel method.</p>
             </div>
 
-            <button class="info-button" onclick="toggleInfo()">
-                ⓘ Info
-            </button>
-
+            <button class="info-button" onclick="toggleInfo()">ⓘ Info</button>
         </div>
 
-
-        <!-- ==========================================
-             INFO PANEL
-        =========================================== -->
-
         <div id="infoPanel" class="info-panel">
-
             <h2>About this Program</h2>
 
             <p>
@@ -72,56 +52,55 @@
             <p class="version">
                 Version 1.0 • 2026
             </p>
+        </div>
+
+
+        <h2>Coefficient Matrix</h2>
+
+        <div class="equation">
+
+            <div class="matrix">
+                <input id="a11" type="number" placeholder="a₁₁">
+                <input id="a12" type="number" placeholder="a₁₂">
+                <input id="a13" type="number" placeholder="a₁₃">
+            </div>
+
+            <span class="equals">=</span>
+
+            <input id="b1" type="number" placeholder="b₁">
 
         </div>
 
 
-        <!-- ==========================================
-             COEFFICIENT MATRIX
-        =========================================== -->
+        <div class="equation">
 
-        <h2>Coefficient Matrix</h2>
+            <div class="matrix">
+                <input id="a21" type="number" placeholder="a₂₁">
+                <input id="a22" type="number" placeholder="a₂₂">
+                <input id="a23" type="number" placeholder="a₂₃">
+            </div>
 
-        <div class="matrix">
-
-            <!-- Row 1 -->
-
-            <input id="a11" type="number" placeholder="a₁₁">
-            <input id="a12" type="number" placeholder="a₁₂">
-            <input id="a13" type="number" placeholder="a₁₃">
-
-            <span>=</span>
-
-            <input id="b1" type="number" placeholder="b₁">
-
-
-            <!-- Row 2 -->
-
-            <input id="a21" type="number" placeholder="a₂₁">
-            <input id="a22" type="number" placeholder="a₂₂">
-            <input id="a23" type="number" placeholder="a₂₃">
-
-            <span>=</span>
+            <span class="equals">=</span>
 
             <input id="b2" type="number" placeholder="b₂">
 
+        </div>
 
-            <!-- Row 3 -->
 
-            <input id="a31" type="number" placeholder="a₃₁">
-            <input id="a32" type="number" placeholder="a₃₂">
-            <input id="a33" type="number" placeholder="a₃₃">
+        <div class="equation">
 
-            <span>=</span>
+            <div class="matrix">
+                <input id="a31" type="number" placeholder="a₃₁">
+                <input id="a32" type="number" placeholder="a₃₂">
+                <input id="a33" type="number" placeholder="a₃₃">
+            </div>
+
+            <span class="equals">=</span>
 
             <input id="b3" type="number" placeholder="b₃">
 
         </div>
 
-
-        <!-- ==========================================
-             INITIAL VALUES
-        =========================================== -->
 
         <h2>Initial Values</h2>
 
@@ -145,15 +124,10 @@
         </div>
 
 
-        <!-- ==========================================
-             SETTINGS
-        =========================================== -->
-
         <div class="settings">
 
             <label>
                 Tolerance:
-
                 <input
                     id="tolerance"
                     type="number"
@@ -164,7 +138,6 @@
 
             <label>
                 Max Iterations:
-
                 <input
                     id="maxIterations"
                     type="number"
@@ -175,25 +148,10 @@
         </div>
 
 
-        <!-- ==========================================
-             CALCULATE BUTTON
-        =========================================== -->
-
-        <button onclick="calculate()">
-            Calculate
-        </button>
-
-
-        <!-- ==========================================
-             RESULTS
-        =========================================== -->
+        <button onclick="calculate()">Calculate</button>
 
         <div id="result"></div>
 
-
-        <!-- ==========================================
-             FOOTER
-        =========================================== -->
 
         <footer>
             © 2026 Joshua V Jose • Gauss-Seidel Calculator
@@ -202,10 +160,7 @@
     </div>
 
 
-    <!-- JAVASCRIPT -->
-
     <script src="script.js"></script>
 
 </body>
-
 </html>

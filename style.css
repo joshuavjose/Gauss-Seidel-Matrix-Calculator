@@ -22,9 +22,8 @@ body {
     backdrop-filter: blur(10px);
 }
 
-/* =========================
-   TOP BAR
-========================= */
+
+/* TOP BAR */
 
 .top-bar {
     display: flex;
@@ -36,18 +35,10 @@ body {
 h1 {
     margin: 0;
     font-size: 38px;
-
-    background: linear-gradient(
-        90deg,
-        #a855f7,
-        #6366f1,
-        #22d3ee
-    );
-
+    background: linear-gradient(90deg, #a855f7, #6366f1, #22d3ee);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-
     font-weight: 800;
 }
 
@@ -56,9 +47,8 @@ h1 {
     margin-top: 8px;
 }
 
-/* =========================
-   INFO BUTTON
-========================= */
+
+/* INFO BUTTON */
 
 .info-button {
     background: rgba(120, 70, 255, 0.15);
@@ -77,9 +67,8 @@ h1 {
     box-shadow: 0 5px 20px rgba(120, 70, 255, 0.25);
 }
 
-/* =========================
-   INFO PANEL
-========================= */
+
+/* INFO PANEL */
 
 .info-panel {
     max-height: 0;
@@ -87,7 +76,6 @@ h1 {
     opacity: 0;
     margin-top: 0;
     padding: 0 20px;
-
     background: rgba(20, 18, 45, 0.9);
     border: 1px solid transparent;
     border-radius: 14px;
@@ -137,27 +125,42 @@ h1 {
     color: #68677d !important;
 }
 
-/* =========================
-   HEADINGS
-========================= */
+
+/* HEADINGS */
 
 h2 {
     color: #d9d4ff;
     margin-top: 30px;
 }
 
-/* =========================
-   MATRIX
-========================= */
+
+/* EQUATIONS */
+
+.equation {
+    display: grid;
+    grid-template-columns: 1fr 30px 110px;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
 
 .matrix {
     display: grid;
-    grid-template-columns: repeat(3, 1fr) 30px 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    align-items: center;
 }
 
+.equals {
+    text-align: center;
+    color: #aaa8c2;
+    font-size: 20px;
+}
+
+
+/* INPUTS */
+
 .matrix input,
+.equation > input,
 .initial input,
 .settings input {
     width: 100%;
@@ -172,21 +175,15 @@ h2 {
 }
 
 .matrix input:focus,
+.equation > input:focus,
 .initial input:focus,
 .settings input:focus {
     border-color: #8b5cf6;
     box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
 }
 
-.matrix span {
-    text-align: center;
-    color: #aaa8c2;
-    font-size: 20px;
-}
 
-/* =========================
-   INITIAL VALUES
-========================= */
+/* INITIAL VALUES */
 
 .initial {
     display: grid;
@@ -199,9 +196,8 @@ h2 {
     font-size: 14px;
 }
 
-/* =========================
-   SETTINGS
-========================= */
+
+/* SETTINGS */
 
 .settings {
     display: grid;
@@ -215,9 +211,8 @@ h2 {
     font-size: 14px;
 }
 
-/* =========================
-   MAIN BUTTON
-========================= */
+
+/* BUTTON */
 
 button {
     font-family: inherit;
@@ -229,18 +224,11 @@ button {
     padding: 14px;
     border: none;
     border-radius: 10px;
-
-    background: linear-gradient(
-        90deg,
-        #7c3aed,
-        #6366f1
-    );
-
+    background: linear-gradient(90deg, #7c3aed, #6366f1);
     color: white;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-
     transition: 0.25s;
 }
 
@@ -249,9 +237,8 @@ button {
     box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
 }
 
-/* =========================
-   STATUS CARDS
-========================= */
+
+/* STATUS CARDS */
 
 .status-card {
     margin-top: 25px;
@@ -289,18 +276,13 @@ button {
     color: #fbbf24;
 }
 
-/* =========================
-   INPUT ERRORS
-========================= */
-
 .input-error {
     border-color: #ef4444 !important;
     box-shadow: 0 0 10px rgba(239, 68, 68, 0.25) !important;
 }
 
-/* =========================
-   ITERATIONS
-========================= */
+
+/* ITERATIONS */
 
 .iterations-section {
     margin-top: 25px;
@@ -309,19 +291,15 @@ button {
 .iterations-toggle {
     width: 100%;
     padding: 14px 18px;
-
     display: flex;
     align-items: center;
     gap: 10px;
-
     background: rgba(100, 70, 180, 0.12);
     border: 1px solid rgba(140, 110, 220, 0.3);
     border-radius: 10px;
-
     color: #d8d4f0;
     font-size: 15px;
     cursor: pointer;
-
     transition: 0.25s;
 }
 
@@ -351,9 +329,8 @@ button {
     overflow-x: auto;
 }
 
-/* =========================
-   TABLE
-========================= */
+
+/* TABLE */
 
 table {
     width: 100%;
@@ -383,18 +360,15 @@ tr:hover td {
     background: rgba(120, 90, 220, 0.08);
 }
 
-/* =========================
-   SOLUTION CARD
-========================= */
+
+/* SOLUTION */
 
 .solution-card {
     margin-top: 25px;
     padding: 25px;
-
     background: rgba(50, 30, 100, 0.18);
     border: 1px solid rgba(150, 110, 255, 0.35);
     border-radius: 15px;
-
     box-shadow: 0 0 25px rgba(100, 70, 220, 0.1);
 }
 
@@ -407,16 +381,12 @@ tr:hover td {
 .solution-icon {
     width: 42px;
     height: 42px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 50%;
-
     background: rgba(50, 220, 150, 0.15);
     color: #6ee7b7;
-
     font-size: 22px;
 }
 
@@ -457,9 +427,8 @@ tr:hover td {
     color: #ddd6fe;
 }
 
-/* =========================
-   FOOTER
-========================= */
+
+/* FOOTER */
 
 footer {
     margin-top: 35px;
@@ -468,9 +437,8 @@ footer {
     font-size: 11px;
 }
 
-/* =========================
-   MOBILE
-========================= */
+
+/* MOBILE */
 
 @media (max-width: 650px) {
 
@@ -482,33 +450,75 @@ footer {
 
     .top-bar {
         flex-direction: column;
+        gap: 12px;
     }
 
     h1 {
         font-size: 30px;
+        line-height: 1.15;
+    }
+
+    .top-bar p {
+        line-height: 1.5;
     }
 
     .info-button {
         align-self: flex-end;
     }
 
+
+    /* Each equation becomes its own mobile block */
+
+    .equation {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
     .matrix {
-        grid-template-columns: repeat(3, 1fr);
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        width: 100%;
     }
 
-    .matrix span {
-        display: none;
+    .matrix input,
+    .equation > input {
+        min-width: 0;
+        padding: 11px 8px;
+        font-size: 14px;
     }
 
-    .matrix input:nth-child(4),
-    .matrix input:nth-child(9),
-    .matrix input:nth-child(14) {
-        grid-column: span 3;
+    .equals {
+        display: block;
+        font-size: 18px;
+        line-height: 18px;
     }
+
+    .equation > input {
+        width: 100%;
+    }
+
+
+    /* Other sections */
 
     .initial,
     .settings,
     .solution-values {
         grid-template-columns: 1fr;
     }
+
+    .iterations-panel {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 500px;
+    }
+
+    .solution-card {
+        padding: 20px;
+    }
+
 }

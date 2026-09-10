@@ -8,7 +8,6 @@ function calculate() {
         "a31", "a32", "a33", "b3"
     ];
 
-    // Remove previous error highlights
     matrixIds.forEach(id => {
         document.getElementById(id).classList.remove("input-error");
     });
@@ -16,16 +15,20 @@ function calculate() {
     document.getElementById("tolerance").classList.remove("input-error");
     document.getElementById("maxIterations").classList.remove("input-error");
 
-    // Check empty fields
+
+    /* CHECK EMPTY FIELDS */
+
     let emptyFields = [];
 
     matrixIds.forEach(id => {
+
         const input = document.getElementById(id);
 
         if (input.value.trim() === "") {
             emptyFields.push(id);
             input.classList.add("input-error");
         }
+
     });
 
     if (emptyFields.length > 0) {
@@ -33,14 +36,18 @@ function calculate() {
         result.innerHTML = `
             <div class="status-card error-card">
                 <h2>⚠ Input Required</h2>
-                <p>Please fill in all coefficient and constant values.</p>
+                <p>
+                    Please fill in all coefficient and constant values.
+                </p>
             </div>
         `;
 
         return;
     }
 
-    // Get matrix values
+
+    /* READ MATRIX VALUES */
+
     const a11 = Number(document.getElementById("a11").value);
     const a12 = Number(document.getElementById("a12").value);
     const a13 = Number(document.getElementById("a13").value);
@@ -56,37 +63,35 @@ function calculate() {
     const a33 = Number(document.getElementById("a33").value);
     const b3 = Number(document.getElementById("b3").value);
 
+
     const values = [
         a11, a12, a13, b1,
         a21, a22, a23, b2,
         a31, a32, a33, b3
     ];
 
-    // Check valid numbers
+
+    /* CHECK NUMBERS */
+
     if (values.some(value => !Number.isFinite(value))) {
 
         result.innerHTML = `
             <div class="status-card error-card">
                 <h2>⚠ Invalid Input</h2>
-                <p>Please enter valid numerical values only.</p>
+                <p>
+                    Please enter valid numerical values only.
+                </p>
             </div>
         `;
 
         return;
     }
 
-    // Check diagonal elements
-    const diagonalIds = [
-        "a11",
-        "a22",
-        "a33"
-    ];
 
-    const diagonalValues = [
-        a11,
-        a22,
-        a33
-    ];
+    /* CHECK ZERO DIAGONAL */
+
+    const diagonalIds = ["a11", "a22", "a33"];
+    const diagonalValues = [a11, a22, a33];
 
     let zeroDiagonal = false;
 
@@ -100,6 +105,7 @@ function calculate() {
 
             zeroDiagonal = true;
         }
+
     }
 
     if (zeroDiagonal) {
@@ -119,10 +125,13 @@ function calculate() {
         return;
     }
 
-    // Initial values
+
+    /* INITIAL VALUES */
+
     let x1 = Number(document.getElementById("x1").value);
     let x2 = Number(document.getElementById("x2").value);
     let x3 = Number(document.getElementById("x3").value);
+
 
     if (
         !Number.isFinite(x1) ||
@@ -144,7 +153,9 @@ function calculate() {
         return;
     }
 
-    // Settings
+
+    /* SETTINGS */
+
     const toleranceInput =
         document.getElementById("tolerance");
 
@@ -157,7 +168,7 @@ function calculate() {
     const maxIterations =
         Number(maxIterationsInput.value);
 
-    // Validate tolerance
+
     if (
         !Number.isFinite(tolerance) ||
         tolerance <= 0
@@ -178,7 +189,7 @@ function calculate() {
         return;
     }
 
-    // Validate max iterations
+
     if (
         !Number.isInteger(maxIterations) ||
         maxIterations < 1 ||
@@ -202,9 +213,8 @@ function calculate() {
         return;
     }
 
-    // =========================
-    // DIAGONAL DOMINANCE CHECK
-    // =========================
+
+    /* DIAGONAL DOMINANCE CHECK */
 
     const row1Dominant =
         Math.abs(a11) >
@@ -223,7 +233,9 @@ function calculate() {
         row2Dominant &&
         row3Dominant;
 
+
     let systemCheck = "";
+
 
     if (diagonallyDominant) {
 
@@ -233,9 +245,7 @@ function calculate() {
                 <h2>✓ System Check</h2>
 
                 <p>✓ All input values are valid</p>
-
                 <p>✓ No zero diagonal coefficients</p>
-
                 <p>✓ Matrix is diagonally dominant</p>
 
                 <div class="status-good">
@@ -253,13 +263,8 @@ function calculate() {
                 <h2>⚠ System Check</h2>
 
                 <p>✓ All input values are valid</p>
-
                 <p>✓ No zero diagonal coefficients</p>
-
-                <p>
-                    ⚠ Matrix is not strictly
-                    diagonally dominant
-                </p>
+                <p>⚠ Matrix is not strictly diagonally dominant</p>
 
                 <div class="status-warning">
                     ● Convergence is not guaranteed
@@ -267,7 +272,11 @@ function calculate() {
 
             </div>
         `;
+
     }
+
+
+    /* GAUSS-SEIDEL ITERATIONS */
 
     let output = systemCheck;
 
@@ -277,9 +286,6 @@ function calculate() {
 
     let convergenceIteration = 0;
 
-    // =========================
-    // GAUSS-SEIDEL ITERATIONS
-    // =========================
 
     for (
         let i = 1;
@@ -291,31 +297,24 @@ function calculate() {
         const oldX2 = x2;
         const oldX3 = x3;
 
-        // Calculate x1
+
+        /* GAUSS-SEIDEL UPDATE */
+
         x1 =
-            (
-                b1 -
-                a12 * x2 -
-                a13 * x3
-            ) / a11;
+            (b1 - a12 * x2 - a13 * x3)
+            / a11;
 
-        // Calculate x2 using newest x1
         x2 =
-            (
-                b2 -
-                a21 * x1 -
-                a23 * x3
-            ) / a22;
+            (b2 - a21 * x1 - a23 * x3)
+            / a22;
 
-        // Calculate x3 using newest x1 and x2
         x3 =
-            (
-                b3 -
-                a31 * x1 -
-                a32 * x2
-            ) / a33;
+            (b3 - a31 * x1 - a32 * x2)
+            / a33;
 
-        // Check for invalid results
+
+        /* CHECK CALCULATION */
+
         if (
             !Number.isFinite(x1) ||
             !Number.isFinite(x2) ||
@@ -330,6 +329,7 @@ function calculate() {
                     <p>
                         The iteration produced an invalid
                         numerical result.
+
                         This system may not converge using
                         Gauss-Seidel.
                     </p>
@@ -342,14 +342,18 @@ function calculate() {
             return;
         }
 
-        // Calculate error
+
+        /* CALCULATE ERROR */
+
         const error = Math.max(
             Math.abs(x1 - oldX1),
             Math.abs(x2 - oldX2),
             Math.abs(x3 - oldX3)
         );
 
-        // Add iteration row
+
+        /* SAVE ITERATION */
+
         iterationRows += `
             <tr>
                 <td>${i}</td>
@@ -360,7 +364,9 @@ function calculate() {
             </tr>
         `;
 
-        // Check convergence
+
+        /* CONVERGENCE */
+
         if (error < tolerance) {
 
             converged = true;
@@ -369,11 +375,11 @@ function calculate() {
 
             break;
         }
+
     }
 
-    // =========================
-    // ITERATION DROPDOWN
-    // =========================
+
+    /* ITERATION TABLE */
 
     output += `
         <div class="iterations-section">
@@ -383,19 +389,18 @@ function calculate() {
                 onclick="toggleIterations()"
             >
 
-                <span id="iterationsArrow">
-                    ▶
-                </span>
+                <span id="iterationsArrow">▶</span>
 
                 <span>
                     View Iterations
                     (${converged
                         ? convergenceIteration
-                        : maxIterations}
-                    iterations)
+                        : maxIterations
+                    } iterations)
                 </span>
 
             </button>
+
 
             <div
                 id="iterationsPanel"
@@ -421,9 +426,8 @@ function calculate() {
         </div>
     `;
 
-    // =========================
-    // FINAL RESULT
-    // =========================
+
+    /* FINAL RESULT */
 
     if (converged) {
 
@@ -458,35 +462,18 @@ function calculate() {
                 <div class="solution-values">
 
                     <div>
-
                         <span>x₁</span>
-
-                        <strong>
-                            ${x1.toFixed(6)}
-                        </strong>
-
+                        <strong>${x1.toFixed(6)}</strong>
                     </div>
 
-
                     <div>
-
                         <span>x₂</span>
-
-                        <strong>
-                            ${x2.toFixed(6)}
-                        </strong>
-
+                        <strong>${x2.toFixed(6)}</strong>
                     </div>
 
-
                     <div>
-
                         <span>x₃</span>
-
-                        <strong>
-                            ${x3.toFixed(6)}
-                        </strong>
-
+                        <strong>${x3.toFixed(6)}</strong>
                     </div>
 
                 </div>
@@ -499,14 +486,11 @@ function calculate() {
         output += `
             <div class="status-card warning-card">
 
-                <h2>
-                    ⚠ Maximum Iterations Reached
-                </h2>
+                <h2>⚠ Maximum Iterations Reached</h2>
 
                 <p>
                     The method did not reach the selected
-                    tolerance within
-                    ${maxIterations}
+                    tolerance within ${maxIterations}
                     iterations.
                 </p>
 
@@ -520,15 +504,16 @@ function calculate() {
 
             </div>
         `;
+
     }
 
+
     result.innerHTML = output;
+
 }
 
 
-// =========================
-// INFO DROPDOWN
-// =========================
+/* INFO PANEL */
 
 function toggleInfo() {
 
@@ -536,12 +521,11 @@ function toggleInfo() {
         document.getElementById("infoPanel");
 
     infoPanel.classList.toggle("show");
+
 }
 
 
-// =========================
-// ITERATIONS DROPDOWN
-// =========================
+/* ITERATION PANEL */
 
 function toggleIterations() {
 
@@ -551,7 +535,9 @@ function toggleIterations() {
     const arrow =
         document.getElementById("iterationsArrow");
 
+
     panel.classList.toggle("show");
+
 
     if (panel.classList.contains("show")) {
 
@@ -560,5 +546,7 @@ function toggleIterations() {
     } else {
 
         arrow.textContent = "▶";
+
     }
+
 }
